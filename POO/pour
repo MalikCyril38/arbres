@@ -1,0 +1,62 @@
+import os
+
+# Tableau de jeu (3x3)
+game_board = [[' ' for _ in range(3)] for _ in range(3)]
+
+# Joueur actuel (X ou O)
+current_player = 'X'
+
+# Fonction pour afficher le tableau de jeu
+def print_game_board():
+    os.system('clear')  # Nettoie la console
+    for row in game_board:
+        print(' | '.join(row))
+        print('-+---+---')
+
+# Fonction pour jouer un coup
+def play_move(row, col):
+    global current_player
+    if game_board[row][col] == ' ':
+        game_board[row][col] = current_player
+        current_player = 'O' if current_player == 'X' else 'X'
+    else:
+        print("Coup invalide ! Essaye à nouveau.")
+
+# Fonction pour vérifier si le jeu est gagné
+def check_for_win():
+    # Vérification des lignes
+    for row in game_board:
+        if row.count(row[0]) == 3 and row[0] != ' ':
+            return True
+
+    # Vérification des colonnes
+    for col in range(3):
+        if all(game_board[row][col] == game_board[0][col] for row in range(3)) and game_board[0][col] != ' ':
+            return True
+
+    # Vérification de la diagonale
+    if all(game_board[i][i] == game_board[0][0] for i in range(3)) and game_board[0][0] != ' ':
+        return True
+    if all(game_board[i][2-i] == game_board[0][2] for i in range(3)) and game_board[0][2] != ' ':
+        return True
+
+    # Si personne n'a gagné, le jeu est en égalité
+    return False
+
+# Fonction pour jouer le jeu
+def play_game():
+    print_game_board()
+    while True:
+        row = int(input("Entrez la ligne du coup (0-2): "))
+        col = int(input("Entrez la colonne du coup (0-2): "))
+        play_move(row, col)
+        print_game_board()
+        if check_for_win():
+            print(f"Le joueur {current_player} a gagné !")
+            break
+play_game
+# Lancement du jeu
+play_game()
+
+
+print(play_game)
